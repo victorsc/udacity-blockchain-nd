@@ -154,7 +154,6 @@ class Blockchain {
     getBlockByHeight(height) {
         let self = this;
         return new Promise((resolve, reject) => {
-            console.log(self.chain);
             let block = self.chain.filter(p => p.height === height)[0];
             if(block){
                 resolve(block);
@@ -174,8 +173,9 @@ class Blockchain {
         let self = this;
         let stars = [];
         return new Promise(async (resolve, reject) => {
-            for (const block in self.chain) {
-                const blockData = await block.getBdata();
+            for (const block of self.chain) {
+                console.log(block);
+                const blockData = await block.getBData();
                 if (blockData && blockData.owner === address) {
                     stars.push(blockData.data);
                 }
@@ -195,7 +195,7 @@ class Blockchain {
         let valid = true;
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
-            for (const block in self.chain) {
+            for (const block of self.chain) {
                 if (!block.validate()) {
                     errorLog.push(`Block height [${block.height}] is not valid`);
                     valid = false;
